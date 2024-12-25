@@ -1,12 +1,6 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5434/COMMENTS_PLATFORM
-    username: news_user
-    password: news_pass
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+  profiles:
+    active: dev
 
 server:
   port: 8082
