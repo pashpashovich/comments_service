@@ -7,6 +7,12 @@
           <package value="ru.clevertec.comments_service" />
         </packages>
       </persistence-unit>
+      <persistence-unit moduleName="comments_service.api.main" name="Default">
+        <packages>
+          <package value="ru.clevertec" />
+        </packages>
+      </persistence-unit>
+      <persistence-unit moduleName="comments_service.core.main" name="Default" />
     </persistence-units>
   </component>
 </project>

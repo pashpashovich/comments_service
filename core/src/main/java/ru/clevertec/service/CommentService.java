@@ -1,26 +1,25 @@
 package ru.clevertec.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.clevertec.dto.CommentCreateRequest;
 import ru.clevertec.dto.CommentDto;
-import ru.clevertec.entity.Comment;
-import ru.clevertec.mapper.CommentsMapper;
+import ru.clevertec.exception.NotFoundException;
+import ru.clevertec.mapper.CommentMapper;
 import ru.clevertec.port.CommentRepositoryPort;
+import ru.clevertec.port.NewsServicePort;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class CommentService {
 
     private final CommentRepositoryPort repository;
-    private final CommentsMapper commentsMapper;
-
-    public CommentService(CommentRepositoryPort repository, CommentsMapper commentsMapper) {
-        this.repository = repository;
-        this.commentsMapper = commentsMapper;
-    }
+    private final CommentMapper commentsMapper;
+    private final NewsServicePort newsServicePort;
 
     public Page<CommentDto> getAllComments(Pageable pageable) {
         return commentsMapper.toDtoList(repository.findAll(pageable));
@@ -30,12 +29,14 @@ public class CommentService {
         return commentsMapper.toDtoList(repository.findByNewsId(newsId, pageable));
     }
 
-    public CommentDto createComment(Comment comment) {
-        return commentsMapper.toDto(repository.save(comment));
+    public CommentDto createComment(CommentCreateRequest comment) {
+        newsServicePort.getNewsById(comment.getNewsId());
+        return commentsMapper.toDto(repository.save(commentsMapper.toDomain(comment)));
     }
 
-    public Optional<Comment> getCommentById(UUID id) {
-        return repository.findById(id);
+    public CommentDto getCommentById(UUID id) {
+        return commentsMapper.toDto(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Комментарий с таким ID не найден")));
     }
 
     public void deleteComment(UUID id) {

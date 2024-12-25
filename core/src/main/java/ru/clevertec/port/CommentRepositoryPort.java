@@ -3,7 +3,7 @@ package ru.clevertec.port;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import ru.clevertec.entity.Comment;
+import ru.clevertec.domain.Comment;
 
 import java.util.Optional;
 import java.util.UUID;

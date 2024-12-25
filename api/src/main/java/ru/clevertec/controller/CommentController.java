@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.clevertec.api.ApiResponse;
+import ru.clevertec.dto.CommentCreateRequest;
 import ru.clevertec.dto.CommentDto;
-import ru.clevertec.entity.Comment;
 import ru.clevertec.service.CommentService;
 
 import java.util.UUID;
@@ -37,7 +37,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public ApiResponse<CommentDto> createComment(@RequestBody Comment comment) {
+    public ApiResponse<CommentDto> createComment(@RequestBody CommentCreateRequest comment) {
         CommentDto createdComment = commentService.createComment(comment);
         return ApiResponse.<CommentDto>builder()
                 .message("Комментарий успешно создан")
