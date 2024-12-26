@@ -26,7 +26,7 @@ public class CommentEntity {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "text", nullable = false)
+    @Column(name = "text", nullable = false,columnDefinition = "TEXT")
     private String text;
 
     @Column(name = "username", nullable = false)

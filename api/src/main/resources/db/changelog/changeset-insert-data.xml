@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="2" author="pashpashovich">
+        <insert tableName="comments">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="news_id" value="1e760810-8859-46bd-8ebd-c9a6c3df431a"/>
+            <column name="text" value="Great article, really insightful!"/>
+            <column name="username" value="user1"/>
+            <column name="created_at" valueDate="2024-12-25T11:00:00"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="news_id" value="1e760810-8859-46bd-8ebd-c9a6c3df431a"/>
+            <column name="text" value="I completely agree with your perspective."/>
+            <column name="username" value="user2"/>
+            <column name="created_at" valueDate="2024-12-25T11:05:00"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="news_id" value="0bd1bd0d-62bd-4492-a90e-0e2c682d835d"/>
+            <column name="text" value="This is exactly what I was looking for!"/>
+            <column name="username" value="user3"/>
+            <column name="created_at" valueDate="2024-12-25T11:10:00"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="news_id" value="0bd1bd0d-62bd-4492-a90e-0e2c682d835d"/>
+            <column name="text" value="I think you missed an important point here."/>
+            <column name="username" value="user4"/>
+            <column name="created_at" valueDate="2024-12-25T11:15:00"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="news_id" value="00c1882c-79ff-4b3b-b661-952df104a5d9"/>
+            <column name="text" value="This news is fantastic, keep it up!"/>
+            <column name="username" value="sportsfan"/>
+            <column name="created_at" valueDate="2024-12-25T12:00:00"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="news_id" value="00c1882c-79ff-4b3b-b661-952df104a5d9"/>
+            <column name="text" value="Not sure if I completely agree, but interesting."/>
+            <column name="username" value="critic42"/>
+            <column name="created_at" valueDate="2024-12-25T12:05:00"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="news_id" value="76cd4389-2274-49c3-abb5-650348cf9381"/>
+            <column name="text" value="Amazing perspective on the economy!"/>
+            <column name="username" value="economist"/>
+            <column name="created_at" valueDate="2024-12-25T12:30:00"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="news_id" value="76cd4389-2274-49c3-abb5-650348cf9381"/>
+            <column name="text" value="What a great take on the sports industry."/>
+            <column name="username" value="athlete101"/>
+            <column name="created_at" valueDate="2024-12-25T13:00:00"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="news_id" value="e8a61cd5-d095-4f6c-98e9-935f25c90c96"/>
+            <column name="text" value="What a great take on the economics industry."/>
+            <column name="username" value="athlete101"/>
+            <column name="created_at" valueDate="2024-12-25T13:00:00"/>
+        </insert>
+        <insert tableName="comments">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="news_id" value="e8a61cd5-d095-4f6c-98e9-935f25c90c96"/>
+            <column name="text" value="What a great take on the economics industry."/>
+            <column name="username" value="athlete101"/>
+            <column name="created_at" valueDate="2024-12-25T13:00:00"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
