@@ -5,12 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.clevertec.api.ApiResponse;
-import ru.clevertec.dto.NewsDto;
+import ru.clevertec.dto.UserDetailsDto;
 
-import java.util.UUID;
-
-@FeignClient(name = "news-service", url = "http://localhost:8081")
-public interface NewsClient {
-    @GetMapping("/news/{id}")
-    ResponseEntity<ApiResponse<NewsDto>>getNewsById(@PathVariable UUID id);
+@FeignClient(name = "user-service", url = "http://localhost:8085")
+public interface UserServiceClient {
+    @GetMapping("/users/{username}")
+    ResponseEntity<ApiResponse<UserDetailsDto>> getUserByUsername(@PathVariable("username") String username);
 }
+

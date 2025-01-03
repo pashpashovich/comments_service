@@ -12,6 +12,6 @@ public class Comment {
     private UUID id;
     private String text;
     private String username;
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt=LocalDateTime.now();
     private UUID newsId;
 }

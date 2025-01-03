@@ -37,5 +37,6 @@ public class CommentEntity {
 
     @Column(name = "news_id", nullable = false)
     private UUID newsId;
+
 }
 

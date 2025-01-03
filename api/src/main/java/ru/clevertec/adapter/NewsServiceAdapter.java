@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.clevertec.client.NewsClient;
 import ru.clevertec.dto.NewsDto;
+import ru.clevertec.exception.NotFoundException;
 import ru.clevertec.port.NewsServicePort;
 
 import java.util.UUID;
@@ -16,6 +17,8 @@ public class NewsServiceAdapter implements NewsServicePort {
 
     @Override
     public NewsDto getNewsById(UUID id) {
-        return newsClient.getNewsById(id);
+        if (newsClient.getNewsById(id).getBody().getData() == null)
+            throw new NotFoundException(String.format("Новость с id %s не найдена", id));
+        return newsClient.getNewsById(id).getBody().getData();
     }
 }

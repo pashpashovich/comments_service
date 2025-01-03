@@ -1,8 +1,10 @@
 spring:
   profiles:
-    active: dev
+    active: dev,redis
 
 server:
   port: 8082
+
+
 
 
