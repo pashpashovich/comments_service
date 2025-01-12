@@ -5,3 +5,7 @@ tasks.named('bootJar') {
 dependencies {
     implementation "org.springframework.security:spring-security-web:6.4.2"
 }
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
