@@ -1,9 +1,9 @@
 package ru.clevertec.port;
 
-import ru.clevertec.dto.NewsDto;
+import ru.clevertec.domain.NewsFromDto;
 
 import java.util.UUID;
 
 public interface NewsServicePort {
-    NewsDto getNewsById(UUID id);
+     NewsFromDto getNewsById(UUID id);
 }

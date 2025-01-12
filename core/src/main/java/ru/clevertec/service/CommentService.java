@@ -7,8 +7,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.clevertec.cache.Cache;
 import ru.clevertec.domain.Comment;
-import ru.clevertec.dto.CommentCreateRequest;
-import ru.clevertec.dto.CommentDto;
+import ru.clevertec.domain.CommentCreateRequestFromDto;
+import ru.clevertec.domain.CommentFromDto;
 import ru.clevertec.exception.NotFoundException;
 import ru.clevertec.mapper.CommentMapper;
 import ru.clevertec.port.CommentRepositoryPort;
@@ -26,16 +26,16 @@ public class CommentService {
     private final NewsServicePort newsServicePort;
     private final Cache<UUID, Comment> cache;
 
-    public Page<CommentDto> getAllComments(Pageable pageable) {
+    public Page<CommentFromDto> getAllComments(Pageable pageable) {
         return commentsMapper.toDtoList(repository.findAll(pageable));
     }
 
-    public Page<CommentDto> getCommentsByNewsId(UUID newsId, Pageable pageable) {
+    public Page<CommentFromDto> getCommentsByNewsId(UUID newsId, Pageable pageable) {
         newsServicePort.getNewsById(newsId);
         return commentsMapper.toDtoList(repository.findByNewsId(newsId, pageable));
     }
 
-    public CommentDto createComment(CommentCreateRequest comment) {
+    public CommentFromDto createComment(CommentCreateRequestFromDto comment) {
         newsServicePort.getNewsById(comment.getNewsId());
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Comment comment1 = commentsMapper.toDomain(comment);
@@ -45,7 +45,7 @@ public class CommentService {
         return commentsMapper.toDto(comment2);
     }
 
-    public CommentDto getCommentById(UUID id) {
+    public CommentFromDto getCommentById(UUID id) {
         if (cache.contains(id)) {
             return commentsMapper.toDto(cache.get(id));
         }
@@ -55,7 +55,7 @@ public class CommentService {
         return commentsMapper.toDto(comment);
     }
 
-    public CommentDto updateComment(UUID id, CommentCreateRequest updateRequest) throws AccessDeniedException {
+    public CommentFromDto updateComment(UUID id, CommentCreateRequestFromDto updateRequest) throws AccessDeniedException {
         Comment comment = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Комментарий с таким ID не найден"));
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -65,12 +65,27 @@ public class CommentService {
         if (!comment.getUsername().equals(username) && !isAdmin)
             throw new AccessDeniedException("Вы не имеете права изменять этот комментарий!");
         comment.setText(updateRequest.getText());
-        comment.setUsername(username);
+        newsServicePort.getNewsById(comment.getNewsId());
         comment.setNewsId(updateRequest.getNewsId());
-        CommentDto updatedComment = commentsMapper.toDto(repository.save(comment));
+        CommentFromDto updatedComment = commentsMapper.toDto(repository.save(comment));
 
         cache.put(id, comment);
 
+        return updatedComment;
+    }
+
+    public CommentFromDto updateTextInComment(UUID id, String text) throws AccessDeniedException {
+        Comment comment = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Комментарий с таким ID не найден"));
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+                .stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMIN"));
+        if (!comment.getUsername().equals(username) && !isAdmin)
+            throw new AccessDeniedException("Вы не имеете права изменять этот комментарий!");
+        comment.setText(text);
+        CommentFromDto updatedComment = commentsMapper.toDto(repository.save(comment));
+        cache.put(id, comment);
         return updatedComment;
     }
 

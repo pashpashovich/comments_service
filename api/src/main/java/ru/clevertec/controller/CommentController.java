@@ -2,12 +2,14 @@ package ru.clevertec.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.clevertec.api.ApiResponse;
 import ru.clevertec.dto.CommentCreateRequest;
 import ru.clevertec.dto.CommentDto;
+import ru.clevertec.mapper.CommentsDomainMapper;
 import ru.clevertec.service.CommentService;
 
 import java.nio.file.AccessDeniedException;
@@ -29,10 +32,11 @@ import java.util.UUID;
 public class CommentController {
 
     private final CommentService commentService;
+    private final CommentsDomainMapper commentsDomainMapper;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<CommentDto>>> getAllComments(Pageable pageable) {
-        Page<CommentDto> comments = commentService.getAllComments(pageable);
+    public ResponseEntity<ApiResponse<Page<CommentDto>>> getAllComments(@ParameterObject Pageable pageable) {
+        Page<CommentDto> comments = commentsDomainMapper.toDtoPage(commentService.getAllComments(pageable));
         return ResponseEntity.ok(ApiResponse.<Page<CommentDto>>builder()
                 .data(comments)
                 .status(true)
@@ -41,8 +45,8 @@ public class CommentController {
     }
 
     @GetMapping("/{newsId}")
-    public ResponseEntity<ApiResponse<Page<CommentDto>>> getCommentsByNewsId(@PathVariable UUID newsId, Pageable pageable) {
-        Page<CommentDto> comments = commentService.getCommentsByNewsId(newsId, pageable);
+    public ResponseEntity<ApiResponse<Page<CommentDto>>> getCommentsByNewsId(@PathVariable UUID newsId, @ParameterObject Pageable pageable) {
+        Page<CommentDto> comments = commentsDomainMapper.toDtoPage(commentService.getCommentsByNewsId(newsId, pageable));
         return ResponseEntity.ok(ApiResponse.<Page<CommentDto>>builder()
                 .data(comments)
                 .status(true)
@@ -52,7 +56,7 @@ public class CommentController {
 
     @GetMapping("/by-id/{id}")
     public ResponseEntity<ApiResponse<CommentDto>> getCommentById(@PathVariable UUID id) {
-        CommentDto comment = commentService.getCommentById(id);
+        CommentDto comment = commentsDomainMapper.toDto(commentService.getCommentById(id));
         return ResponseEntity.ok(ApiResponse.<CommentDto>builder()
                 .data(comment)
                 .status(true)
@@ -62,7 +66,7 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<CommentDto>> createComment(@Valid @RequestBody CommentCreateRequest comment) {
-        CommentDto createdComment = commentService.createComment(comment);
+        CommentDto createdComment = commentsDomainMapper.toDto(commentService.createComment(commentsDomainMapper.toCommentCreateRequestFromDto(comment)));
         return ResponseEntity.ok(ApiResponse.<CommentDto>builder()
                 .message("Комментарий успешно создан")
                 .status(true)
@@ -71,12 +75,22 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<CommentDto>> updateComment(@PathVariable UUID id, @RequestBody CommentCreateRequest updateRequest) throws AccessDeniedException {
-        CommentDto updatedComment = commentService.updateComment(id, updateRequest);
+    public ResponseEntity<ApiResponse<CommentDto>> updateComment(@PathVariable UUID id, @Valid @RequestBody CommentCreateRequest updateRequest) throws AccessDeniedException {
+        CommentDto updatedComment = commentsDomainMapper.toDto(commentService.updateComment(id, commentsDomainMapper.toCommentCreateRequestFromDto(updateRequest)));
         return ResponseEntity.ok(ApiResponse.<CommentDto>builder()
                 .data(updatedComment)
                 .status(true)
                 .message("Комментарий обновлен")
+                .build());
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApiResponse<CommentDto>> updateTextInComment(@PathVariable UUID id, @RequestBody String text) throws AccessDeniedException {
+        CommentDto updatedComment = commentsDomainMapper.toDto(commentService.updateTextInComment(id, text));
+        return ResponseEntity.ok(ApiResponse.<CommentDto>builder()
+                .data(updatedComment)
+                .status(true)
+                .message("Текст комментария обновлен")
                 .build());
     }
 

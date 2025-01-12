@@ -1,0 +1,56 @@
+openapi: 3.0.3
+info:
+  title: News Service API
+  version: 1.0.0
+paths: { }
+components:
+  schemas:
+    CommentCreateRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 10
+        newsId:
+          type: string
+          format: uuid
+      required:
+        - text
+        - newsId
+
+    NewsDto:
+      type: object
+      properties:
+        title:
+          type: string
+        text:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    CommentDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        text:
+          type: string
+        username:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    UserDetailsDto:
+      type: object
+      properties:
+        username:
+          type: string
+        authorities:
+          type: array
+          items:
+            type: string
+      required:
+        - username
+        - authorities

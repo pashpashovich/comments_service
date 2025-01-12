@@ -1,10 +1,23 @@
 spring:
   profiles:
     active: dev,redis
+  data:
+    redis:
+      host: host.docker.internal
+      port: 6379
 
 server:
   port: 8082
 
+feign:
+  user-service:
+    url: http://host.docker.internal:8085
+  news-service:
+    url: http://host.docker.internal:8081
+
+endpoint:
+  logging:
+    active: true
 
 
 

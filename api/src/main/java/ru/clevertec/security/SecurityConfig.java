@@ -34,6 +34,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/comments").hasAnyAuthority("ADMIN", "SUBSCRIBER")
                         .requestMatchers(HttpMethod.GET, "/news/*").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/comments/*").hasAnyAuthority("ADMIN", "SUBSCRIBER")
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

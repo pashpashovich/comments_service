@@ -1,6 +1,5 @@
-package ru.clevertec.dto;
+package ru.clevertec.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +8,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class CommentDto {
+public class CommentFromDto {
     private UUID id;
     private String text;
     private String username;

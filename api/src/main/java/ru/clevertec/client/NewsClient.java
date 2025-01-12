@@ -9,7 +9,7 @@ import ru.clevertec.dto.NewsDto;
 
 import java.util.UUID;
 
-@FeignClient(name = "news-service", url = "http://localhost:8081")
+@FeignClient(name = "news-service", url = "${feign.news-service.url}")
 public interface NewsClient {
     @GetMapping("/news/{id}")
     ResponseEntity<ApiResponse<NewsDto>>getNewsById(@PathVariable UUID id);
