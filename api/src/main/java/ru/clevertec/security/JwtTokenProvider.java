@@ -2,9 +2,11 @@ package ru.clevertec.security;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile({"dev", "prod"})
 public class JwtTokenProvider {
 
     @Value("${jwt.secret}")

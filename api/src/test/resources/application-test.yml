@@ -1,9 +1,11 @@
 spring:
   datasource:
-    url: jdbc:postgresql://host.docker.internal:5434/COMMENTS_PLATFORM
+    url: jdbc:postgresql://localhost:5434/COMMENTS_PLATFORM
     username: news_user
     password: news_pass
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+  liquibase:
+    enabled: false
