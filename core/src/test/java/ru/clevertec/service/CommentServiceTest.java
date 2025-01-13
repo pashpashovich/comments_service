@@ -69,7 +69,12 @@ class CommentServiceTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
 
         SecurityContextHolder.setContext(securityContext);
-        comment = new Comment(UUID.randomUUID(), "Some comment text", "author", LocalDateTime.now(), UUID.randomUUID());
+        comment = new Comment();
+        comment.setId(UUID.randomUUID());
+        comment.setText("Some comment text");
+        comment.setUsername("author");
+        comment.setCreatedAt(LocalDateTime.now());
+        comment.setNewsId(UUID.randomUUID());
         commentFromDto = new CommentFromDto(comment.getId(), comment.getText(), comment.getUsername(), comment.getCreatedAt());
         commentCreateRequestFromDto = new CommentCreateRequestFromDto(comment.getText(), comment.getNewsId());
     }
@@ -159,7 +164,12 @@ class CommentServiceTest {
     @Test
     void shouldUpdateCommentAccessDenied() {
         // given
-        Comment comment2 = new Comment(UUID.randomUUID(), "Some comment text", "another-author", LocalDateTime.now(), UUID.randomUUID());
+        Comment comment2 = new Comment();
+        comment2.setId(UUID.randomUUID());
+        comment2.setText("Some comment text");
+        comment2.setUsername("another-author");
+        comment2.setCreatedAt(LocalDateTime.now());
+        comment2.setNewsId(UUID.randomUUID());
         CommentCreateRequestFromDto updateRequest = new CommentCreateRequestFromDto("Updated text", comment2.getNewsId());
         when(repository.findById(comment2.getId())).thenReturn(Optional.of(comment2));
         when(newsServicePort.getNewsById(comment2.getNewsId())).thenReturn(null);

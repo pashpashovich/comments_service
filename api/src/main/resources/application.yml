@@ -11,7 +11,7 @@ server:
 
 feign:
   user-service:
-    url: http://host.docker.internal:8085
+    url: http://host.docker.internal:8083
   news-service:
     url: http://host.docker.internal:8081
 
