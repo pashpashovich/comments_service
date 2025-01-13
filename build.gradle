@@ -104,3 +104,5 @@ tasks.named('test') {
 tasks.named('bootJar') {
     mainClass.set("ru.clevertec.CommentsServiceApplication")
 }
+
+
